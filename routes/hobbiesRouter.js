@@ -1,14 +1,14 @@
 import { Router } from "express";
 import { isLoggedIn } from "../middlewares/authMiddlewares.js";
-import { removeHobbyValidate, setHobbiesValidate } from "../middlewares/hobbiesMiddlewares.js";
-import { getHobbiesController, removeHobbyController, setHobbiesController } from "../controllers/hobbiesControllers.js";
+import { addHobbyValidate, removeHobbyValidate } from "../middlewares/hobbiesMiddlewares.js";
+import { addHobbyController, getHobbiesController, removeHobbyController } from "../controllers/hobbiesControllers.js";
 
 
 const hobbiesRouter = Router();
 
 
 
-hobbiesRouter.patch("/add-hobbies", isLoggedIn, setHobbiesValidate, setHobbiesController);
+hobbiesRouter.patch("/add-hobby", isLoggedIn, addHobbyValidate, addHobbyController);
 
 hobbiesRouter.patch("/remove-hobby", isLoggedIn, removeHobbyValidate, removeHobbyController);
 

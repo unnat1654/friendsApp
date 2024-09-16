@@ -6,9 +6,9 @@ import { userModel } from "../models/userModel.js";
 
 export const sendRequestController = async (req, res) => {
     try {
-        const { _id } = req.user;//sender
+        const { _id } = req.user;
 
-        const { user_id } = req.body;//receiver
+        const { user_id } = req.body;
 
         await requestsModel.create({
             sender: _id,

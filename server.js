@@ -1,9 +1,14 @@
 import express from "express";
+import dotenv from "dotenv";
+import morgan from "morgan";
+import helmet from "helmet";
+import cors from "cors";
 import { connectDB } from "./config.js";
-import { authRouter } from "./routes/authRoutes.js";
+import { authRouter } from "./routes/authRouter.js";
 import { hobbiesRouter } from "./routes/hobbiesRouter.js";
 import { requestsRouter } from "./routes/requestsRouter.js";
 import { friendsRouter } from "./routes/friendsRouter.js";
+import { postsRouter } from "./routes/postsRouter.js";
 
 
 dotenv.config();
@@ -11,8 +16,10 @@ dotenv.config();
 const app = express();
 
 //middleware
-app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ limit: "10mb", extended: true, parameterLimit: 50000 }));
+app.use(express.json());
+app.use(express.urlencoded({extended: true }));
+app.use(helmet());
+app.use(cors());
 app.use(morgan("dev"));
 
 //connect to mongodb
@@ -23,6 +30,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/hobby", hobbiesRouter);
 app.use("/api/request", requestsRouter);
 app.use("/api/friends", friendsRouter);
+app.use("/api/post",postsRouter);
 
 
 

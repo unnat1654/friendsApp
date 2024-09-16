@@ -1,3 +1,4 @@
+import { requestsModel } from "../models/requestsModel.js";
 import { userModel } from "../models/userModel.js";
 
 
@@ -7,26 +8,29 @@ export const getFriendRecommendationController = async (req, res) => {
         const { _id } = req.user;
 
         const myDetails = await userModel.findById(_id).select("-_id friends hobbies");
-        if (!myDetails) 
+        if (!myDetails)
             return res.status(404).send({
                 success: false,
                 message: "User not found!"
             });
-        
 
-        // Find users excluding the current user and its friends
+        let requestedUsers=await requestsModel.find({sender:_id}).select("-_id receiver");
+        requestedUsers= requestedUsers.map(requestedUser=>requestedUser.receiver);
+
         const nonFriendUsers = await userModel.find({
-            _id: { $ne: _id, $nin: myDetails.friends }
+            _id: { $ne: _id, $nin: [...myDetails.friends,...requestedUsers] }
         }).select("_id name friends hobbies");
+
+        
 
         const myFriendsSet = new Set(myDetails.friends);
         const myHobbiesSet = new Set(myDetails.hobbies);
 
         const recommendations = nonFriendUsers.map(user => {
-            const mutualFriends = user.friends.reduce((count, friend) => 
+            const mutualFriends = user.friends.reduce((count, friend) =>
                 myFriendsSet.has(friend) ? count + 1 : count, 0);
-            
-            const sharedHobbies = user.hobbies.reduce((count, hobby) => 
+
+            const sharedHobbies = user.hobbies.reduce((count, hobby) =>
                 myHobbiesSet.has(hobby) ? count + 1 : count, 0);
 
             return {
@@ -36,7 +40,7 @@ export const getFriendRecommendationController = async (req, res) => {
                 sharedHobbies,
             };
         }).filter(({ mutualFriends, sharedHobbies }) => mutualFriends > 0 || sharedHobbies > 0)
-          .sort((a, b) => (2 * b.mutualFriends + b.sharedHobbies) - (2 * a.mutualFriends + a.sharedHobbies));
+            .sort((a, b) => (2 * b.mutualFriends + b.sharedHobbies) - (2 * a.mutualFriends + a.sharedHobbies));
 
         res.status(200).send({
             success: true,
@@ -53,6 +57,7 @@ export const getFriendRecommendationController = async (req, res) => {
 };
 
 
+
 export const getFriendsController = async (req, res) => {
     try {
         const { _id } = req.user;
@@ -63,7 +68,7 @@ export const getFriendsController = async (req, res) => {
             .populate("friends", "_id name");
 
         res.status(200).send({
-            success: false,
+            success: true,
             message: "Friends found successfully!",
             friends
         });
@@ -81,16 +86,16 @@ export const removeFriendController = async (req, res) => {
     try {
         const { _id } = req.user;
 
-        const { friend } = req.body;
+        const { user_id } = req.body;
 
         const result = await userModel.updateOne(
             { _id },
-            { $pull: { friends: friend } }
+            { $pull: { friends: user_id } }
         );
         if (result.modifiedCount === 0)
             return res.status(404).send({
                 success: false,
-                message: "Friend not found or user not found!"
+                message: "Friend not found!"
             });
 
         res.status(200).send({

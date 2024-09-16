@@ -7,7 +7,7 @@ import { userModel } from "../models/userModel.js";
 export const isLoggedIn = (req, res, next) => {
     try {
         if (!req.headers.authorization)
-            res.status(400).send({
+            return res.status(400).send({
                 success: false,
                 message: "Authentication Token not found"
             });

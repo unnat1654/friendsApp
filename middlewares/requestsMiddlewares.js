@@ -6,8 +6,13 @@ export const sendRequestValidate = async (req, res, next) => {
     try {
         const { user_id } = req.body;
 
-        const { friends } = await userModel.findById(req.user._id).select("-_id friends");
-        if (friends.includes(user_id))
+        const { friends } = await userModel.findById(user_id).select("-_id friends");
+        if (!friends)
+            return res.status(400).send({
+                success: false,
+                message: "User does not exist!"
+            });
+        if (friends.includes(req.user._id))
             return res.status(400).send({
                 success: false,
                 message: "User already friends!"

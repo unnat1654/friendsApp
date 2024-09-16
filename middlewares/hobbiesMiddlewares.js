@@ -1,15 +1,10 @@
-export const setHobbiesValidate = (req, res, next) => {
+export const addHobbyValidate = (req, res, next) => {
     try {
-        const { hobbies } = req.body;
-        if (!Array.isArray(hobbies))
+        const { hobby } = req.body;
+        if (!hobby || typeof hobby !== 'string')
             return res.status(400).send({
                 success: false,
-                message: "Hobbies should be an array!"
-            });
-        if (!hobbies.every(hobby => typeof hobby === 'string'))
-            return res.status(400).send({
-                success: false,
-                message: "All hobbies must be strings!"
+                message: "Hobby missing!"
             });
 
         next();
@@ -25,8 +20,8 @@ export const setHobbiesValidate = (req, res, next) => {
 
 export const removeHobbyValidate = (req, res, next) => {
     try {
-        const {hobby} = req.body;
-        if(!hobby || typeof hobby !== 'string')
+        const { hobby } = req.body;
+        if (!hobby || typeof hobby !== 'string')
             return res.status(400).send({
                 success: false,
                 message: "Hobby missing!"

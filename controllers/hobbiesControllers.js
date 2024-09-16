@@ -3,28 +3,28 @@ import { userModel } from "../models/userModel.js";
 
 
 
-export const setHobbiesController = async (req, res) => {
+export const addHobbyController = async (req, res) => {
     try {
-        const {_id } = req.user;
+        const { _id } = req.user;
 
-        const { hobbies } = req.body;
+        const { hobby } = req.body;
 
-        const result=await userModel.updateOne({_id}, { $addToSet: { hobbies: { $each: hobbies } } });
+        const result = await userModel.updateOne({ _id }, { $addToSet: { hobbies: hobby } });
         if (!result.matchedCount)
             return res.status(404).send({
                 success: false,
                 message: "User not found!"
             });
-        
+
         res.status(200).send({
             success: true,
-            message: "Hobbies updated successfully!"
+            message: "Hobby added successfully!"
         });
     } catch (error) {
         console.log(error);
         res.status(500).send({
             success: false,
-            message: "Error while signing up!"
+            message: "Error while adding hobby!"
         });
     }
 };
@@ -64,11 +64,11 @@ export const getHobbiesController = async (req, res) => {
     try {
         const { _id } = req.user;
 
-        const {hobbies} = await userModel.findById(_id).select("-_id hobbies");
+        const { hobbies } = await userModel.findById(_id).select("-_id hobbies");
 
         res.status(200).send({
-            success:false,
-            message:"Hobbies found successfully!",
+            success: true,
+            message: "Hobbies found successfully!",
             hobbies
         })
     } catch (error) {
