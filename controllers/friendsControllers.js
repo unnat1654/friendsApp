@@ -23,7 +23,6 @@ export const searchUsersController = async (req, res) => {
             _id: { $ne: _id, $nin: [...myDetails.friends, ...requestedUsers] },
             ...(search ? { name: { $regex: search, $options: 'i' } } : {})
         }).select("_id name friends hobbies");
-        console.log(nonFriendUsers);
         const myFriendsSet = new Set(myDetails.friends);
         const myHobbiesSet = new Set(myDetails.hobbies);
 

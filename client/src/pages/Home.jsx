@@ -10,7 +10,6 @@ import SearchBar from "../components/SearchBar";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-
   const [auth, setAuth] = useAuth();
   const [loading, setLoading] = useState();
   const [friends, setFriends] = useState([]);
@@ -20,6 +19,8 @@ const Home = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [selectedValue, setSelectedValue] = useState("FRIENDS");
   const [newHobby, setNewHobby] = useState("");
+  const [postText, setPostText] = useState("");
+
   const navigate = useNavigate();
 
   const removeFriend = useCallback(async (_id) => {
@@ -40,9 +41,12 @@ const Home = () => {
     try {
       const { data } = await axios.patch(
         "https://friendsapp-jfkv.onrender.com/api/hobby/add-hobby",
-        { hobby:newHobby}
+        { hobby: newHobby }
       );
-      if (data?.success) setHobbies((prev) => [...prev, newHobby]);
+      if (data?.success){ 
+        setHobbies((prev) => [...prev, newHobby]);
+        setNewHobby("");
+      }
     } catch (error) {
       console.error(error);
       alert("An error occurred");
@@ -108,6 +112,22 @@ const Home = () => {
     }
   }, []);
 
+  const handlePostCreate = async (e) => {
+    e.preventDefault();
+    try {
+      const {data} = await axios.post("https://friendsapp-jfkv.onrender.com/api/post/create-post", {
+        text: postText,
+      });
+
+      if (data?.success) {
+        setPostText("");
+      }
+    } catch (error) {
+      console.error("Error publishing post", error);
+      alert("Failed to publish post.");
+    }
+  };
+
   const fetchData = useCallback(async () => {
     try {
       setLoading(true);
@@ -118,10 +138,16 @@ const Home = () => {
         requestsResult,
         postsResult,
       ] = await Promise.all([
-        axios.get("https://friendsapp-jfkv.onrender.com/api/friends/get-friends"),
-        axios.get("https://friendsapp-jfkv.onrender.com/api/friends/search-users"),
+        axios.get(
+          "https://friendsapp-jfkv.onrender.com/api/friends/get-friends"
+        ),
+        axios.get(
+          "https://friendsapp-jfkv.onrender.com/api/friends/search-users"
+        ),
         axios.get("https://friendsapp-jfkv.onrender.com/api/hobby/get-hobbies"),
-        axios.get("https://friendsapp-jfkv.onrender.com/api/request/get-requests"),
+        axios.get(
+          "https://friendsapp-jfkv.onrender.com/api/request/get-requests"
+        ),
         axios.get("https://friendsapp-jfkv.onrender.com/api/post/get-posts"),
       ]);
 
@@ -179,7 +205,7 @@ const Home = () => {
         </div>
       </aside>
       <section className="center-section max-h-[100vh] overflow-y-auto">
-        <article className="create-post bg-white p-6">
+        <form className="create-post bg-white p-6" onSubmit={handlePostCreate}>
           <label
             htmlFor="post-textarea"
             className="text-xl block font-semibold mb-5 text-gray-800"
@@ -191,11 +217,16 @@ const Home = () => {
             rows={3}
             placeholder="Share your thoughts..."
             className="w-full p-3 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={postText}
+            onChange={(e) => setPostText(e.target.value)}
           />
-          <button className="create-post-button mt-4 w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <button
+            type="submit"
+            className="create-post-button mt-4 w-full py-2 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          >
             Publish Post
           </button>
-        </article>
+        </form>
         <article className="hobbies bg-white p-4">
           <header className="hobbies-heading mb-5 block text-lg font-semibold text-gray-700">
             Share your hobbies:
