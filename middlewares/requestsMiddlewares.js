@@ -1,3 +1,4 @@
+import { requestsModel } from "../models/requestsModel.js";
 import { userModel } from "../models/userModel.js";
 
 
@@ -37,7 +38,7 @@ export const sendRequestValidate = async (req, res, next) => {
 
 export const handleRequestValidate = async (req, res, next) => {
     try {
-        const { request_id, choice } = req.body;
+        const { request_id, choice } = req.query;
         if (!request_id)
             return res.status(400).send({ success: false, message: "Request id missing!" });
         if (!choice || (choice !== "ACCEPT" && choice !== "REJECT"))

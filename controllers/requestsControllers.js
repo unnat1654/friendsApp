@@ -33,7 +33,7 @@ export const handleRequestController = async (req, res) => {
     try {
         const { _id } = req.user;
 
-        const { request_id, choice } = req.body;
+        const { request_id, choice } = req.query;
 
         const request = await requestsModel.findOne({ _id: request_id, receiver: _id });
         if (!request)

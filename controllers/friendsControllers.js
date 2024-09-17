@@ -23,7 +23,7 @@ export const searchUsersController = async (req, res) => {
             _id: { $ne: _id, $nin: [...myDetails.friends, ...requestedUsers] },
             ...(search ? { name: { $regex: search, $options: 'i' } } : {})
         }).select("_id name friends hobbies");
-
+        console.log(nonFriendUsers);
         const myFriendsSet = new Set(myDetails.friends);
         const myHobbiesSet = new Set(myDetails.hobbies);
 
@@ -40,7 +40,7 @@ export const searchUsersController = async (req, res) => {
                 mutualFriends,
                 sharedHobbies,
             };
-        }).filter(({ mutualFriends, sharedHobbies }) => mutualFriends > 0 || sharedHobbies > 0)
+        }).filter(({ mutualFriends, sharedHobbies }) => search || mutualFriends > 0 || sharedHobbies > 0)
             .sort((a, b) => (2 * b.mutualFriends + b.sharedHobbies) - (2 * a.mutualFriends + a.sharedHobbies));
 
         res.status(200).send({
@@ -88,15 +88,14 @@ export const removeFriendController = async (req, res) => {
 
         const { user_id } = req.body;
 
-        const result = await userModel.updateOne(
+        await userModel.updateOne(
             { _id },
             { $pull: { friends: user_id } }
         );
-        if (result.modifiedCount === 0)
-            return res.status(404).send({
-                success: false,
-                message: "Friend not found!"
-            });
+        await userModel.updateOne(
+            { _id:user_id },
+            { $pull: { friends: _id } }
+        );
 
         res.status(200).send({
             success: true,

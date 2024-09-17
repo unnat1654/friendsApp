@@ -117,8 +117,8 @@ const Home = () => {
   const removeRequest = useCallback(async (_id, choice) => {
     try {
       const { data } = await axios.delete(
-        "http://localhost:8080/api/hobby/handle-request",
-        { request_id: _id, choice }
+        "http://localhost:8080/api/request/handle-request",
+        { params: { request_id: _id, choice } }
       );
       if (data?.success)
         setRequests((prev) => prev.filter((request) => request._id !== _id));
@@ -152,8 +152,7 @@ const Home = () => {
           params: { search },
         }
       );
-      if (data?.success)
-        setSuggestions(data.recommendations);
+      if (data?.success) setSuggestions(data.recommendations);
     } catch (error) {
       console.error(error);
       alert("An error occurred");
@@ -193,9 +192,9 @@ const Home = () => {
   }, []);
   useEffect(() => {
     if (auth?.token) fetchData();
-    // if(!localStorage.getItem('auth'))
-    //   navigate("/login");
+    if (!localStorage.getItem("auth")) navigate("/login");
   }, [auth?.token]);
+
   return (
     <main className="home md:max-h-screen grid md:grid-cols-[1fr_3fr_1fr] gap-4">
       <aside className="friends md:h-screen flex flex-col justify-start items-center">
@@ -236,7 +235,7 @@ const Home = () => {
             htmlFor="post-textarea"
             className="text-xl block font-semibold mb-5 text-gray-800"
           >
-            Create new Post
+            Hi, {auth && auth.name.split(" ")[0]}
           </label>
           <textarea
             id="post-textarea"
@@ -249,7 +248,7 @@ const Home = () => {
           </button>
         </article>
         <article className="hobbies bg-white p-4">
-          <header className="hobbies-heading block text-lg font-semibold text-gray-700">
+          <header className="hobbies-heading mb-5 block text-lg font-semibold text-gray-700">
             Share your hobbies:
           </header>
           <div className="mb-4 flex justify-evenly">

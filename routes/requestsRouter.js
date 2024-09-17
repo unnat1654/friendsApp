@@ -11,7 +11,7 @@ requestsRouter.post("/send-request", isLoggedIn, sendRequestValidate, sendReques
 
 requestsRouter.delete("/handle-request", isLoggedIn, handleRequestValidate, handleRequestController);
 
-requestsRouter.post("/get-requests", isLoggedIn, getRequestsController);
+requestsRouter.get("/get-requests", isLoggedIn, getRequestsController);
 
 
 export { requestsRouter };

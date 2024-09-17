@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/authcontext";
@@ -67,7 +67,7 @@ const Signup = () => {
               { replace: true }
             )
           }
-          maxlength="25"
+          maxLength="25"
           required
         />
 

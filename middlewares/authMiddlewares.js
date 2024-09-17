@@ -1,5 +1,5 @@
 import JWT from "jsonwebtoken";
-import { isValidName, isValidEmail } from "../helpers/authHelpers.js";
+import { isValidEmail } from "../helpers/authHelpers.js";
 import { userModel } from "../models/userModel.js";
 
 
@@ -9,7 +9,7 @@ export const isLoggedIn = (req, res, next) => {
         if (!req.headers.authorization)
             return res.status(400).send({
                 success: false,
-                message: "Authentication Token not found"
+                message: "Authentication Token missing!"
             });
 
         const decode = JWT.verify(
@@ -36,7 +36,7 @@ export const signupValidate = async (req, res, next) => {
             return res.status(400).send({ success: false, message: "Email missing!" });
         if (!password || password.length < 6)
             return res.status(400).send({ success: false, message: "Password missing!" });
-        if (!name || !isValidName(name))
+        if (!name || name.length>25)
             return res.status(400).send({ success: false, message: "Name missing!" });
 
         const userExists = await userModel.exists({ email });
