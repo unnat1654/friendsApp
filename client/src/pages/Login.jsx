@@ -13,7 +13,7 @@ const Login = () => {
     try {
       e.preventDefault();
       const { data } = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        "https://friendsapp-jfkv.onrender.com/api/auth/login",
         {
           email,
           password,

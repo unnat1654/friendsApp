@@ -76,7 +76,7 @@ const Home = () => {
   const removeFriend = useCallback(async (_id) => {
     try {
       const { data } = await axios.patch(
-        "http://localhost:8080/api/friends/remove-friend",
+        "https://friendsapp-jfkv.onrender.com/api/friends/remove-friend",
         { user_id: _id }
       );
       if (data?.success)
@@ -90,7 +90,7 @@ const Home = () => {
   const addHobby = useCallback(async () => {
     try {
       const { data } = await axios.patch(
-        "http://localhost:8080/api/hobby/add-hobby",
+        "https://friendsapp-jfkv.onrender.com/api/hobby/add-hobby",
         { hobby: newHobby }
       );
       if (data?.success) setHobbies((prev) => [...prev, newHobby]);
@@ -103,7 +103,7 @@ const Home = () => {
   const removeHobby = useCallback(async (hobby) => {
     try {
       const { data } = await axios.patch(
-        "http://localhost:8080/api/hobby/remove-hobby",
+        "https://friendsapp-jfkv.onrender.com/api/hobby/remove-hobby",
         { hobby }
       );
       if (data?.success)
@@ -117,7 +117,7 @@ const Home = () => {
   const removeRequest = useCallback(async (_id, choice) => {
     try {
       const { data } = await axios.delete(
-        "http://localhost:8080/api/request/handle-request",
+        "https://friendsapp-jfkv.onrender.com/api/request/handle-request",
         { params: { request_id: _id, choice } }
       );
       if (data?.success)
@@ -131,7 +131,7 @@ const Home = () => {
   const sendFriendRequest = useCallback(async (_id) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:8080/api/request/send-request",
+        "https://friendsapp-jfkv.onrender.com/api/request/send-request",
         { user_id: _id }
       );
       if (data?.success)
@@ -147,7 +147,7 @@ const Home = () => {
   const searchUsers = useCallback(async (search) => {
     try {
       const { data } = await axios.get(
-        `http://localhost:8080/api/friends/search-users`,
+        `https://friendsapp-jfkv.onrender.com/api/friends/search-users`,
         {
           params: { search },
         }
@@ -169,11 +169,11 @@ const Home = () => {
         requestsResult,
         postsResult,
       ] = await Promise.all([
-        axios.get("http://localhost:8080/api/friends/get-friends"),
-        axios.get("http://localhost:8080/api/friends/search-users"),
-        axios.get("http://localhost:8080/api/hobby/get-hobbies"),
-        axios.get("http://localhost:8080/api/request/get-requests"),
-        axios.get("http://localhost:8080/api/post/get-posts"),
+        axios.get("https://friendsapp-jfkv.onrender.com/api/friends/get-friends"),
+        axios.get("https://friendsapp-jfkv.onrender.com/api/friends/search-users"),
+        axios.get("https://friendsapp-jfkv.onrender.com/api/hobby/get-hobbies"),
+        axios.get("https://friendsapp-jfkv.onrender.com/api/request/get-requests"),
+        axios.get("https://friendsapp-jfkv.onrender.com/api/post/get-posts"),
       ]);
 
       if (friendsResult?.data?.success) setFriends(friendsResult.data.friends);

@@ -16,7 +16,7 @@ const Signup = () => {
       e.preventDefault();
       const name_value = name;
       const { data } = await axios.post(
-        "http://localhost:8080/api/auth/signup",
+        "https://friendsapp-jfkv.onrender.com/api/auth/signup",
         {
           name,
           email,
