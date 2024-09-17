@@ -87,13 +87,13 @@ const Home = () => {
     }
   }, []);
 
-  const addHobby = useCallback(async () => {
+  const addHobby = useCallback(async (hobby) => {
     try {
       const { data } = await axios.patch(
         "https://friendsapp-jfkv.onrender.com/api/hobby/add-hobby",
-        { hobby: newHobby }
+        { hobby }
       );
-      if (data?.success) setHobbies((prev) => [...prev, newHobby]);
+      if (data?.success) setHobbies((prev) => [...prev, hobby]);
     } catch (error) {
       console.error(error);
       alert("An error occurred");
@@ -260,7 +260,7 @@ const Home = () => {
             />
             <button
               className="add-hobby mt-2 w-[40%] py-2 px-4 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
-              onClick={addHobby}
+              onClick={()=>addHobby(newHobby)}
             >
               Add Hobby
             </button>
