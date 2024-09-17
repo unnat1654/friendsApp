@@ -39,7 +39,9 @@ app.use("/api/request", requestsRouter);
 app.use("/api/friends", friendsRouter);
 app.use("/api/post",postsRouter);
 
-
+app.use("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "./dist/index.html"));
+});
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
