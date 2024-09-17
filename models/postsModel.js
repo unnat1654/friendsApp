@@ -10,6 +10,7 @@ const postsSchema = new Schema({
     },
     text:{
         type:String,
+        maxlength: 10000,
         required:true
     },
     createdAt:{

@@ -15,6 +15,7 @@ const userSchema = new Schema({
     name: {
         type: String,
         required: true,
+        maxlength: 25
     },
     hobbies: {
         type: [String],

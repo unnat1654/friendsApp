@@ -8,9 +8,9 @@ export const isValidEmail = (email) => {
 };
 
 
-export const isAlphabetic = (str) => {
+export const isValidName = (str) => {
   const regex = /^[A-Za-z]+$/;
-  return regex.test(str);
+  return (regex.test(str) && str.length<26);
 };
 
 

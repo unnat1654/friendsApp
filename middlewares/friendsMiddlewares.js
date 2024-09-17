@@ -2,6 +2,16 @@ import { userModel } from "../models/userModel.js";
 
 
 
+export const searchUsersValidate = (req, res, next) => {
+    const { search } = req.query;
+    if (search && search.length > 25)
+        return res.status(400).send({
+            success: false, message: "Search query missing!"
+        });
+
+    next();
+};
+
 export const removeFriendsValidate = async (req, res, next) => {
     try {
         const { user_id } = req.body;

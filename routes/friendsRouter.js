@@ -1,13 +1,12 @@
 import { Router } from "express";
 import { isLoggedIn } from "../middlewares/authMiddlewares.js";
-import { removeFriendsValidate } from "../middlewares/friendsMiddlewares.js";
-import { getFriendRecommendationController, getFriendsController, removeFriendController } from "../controllers/friendsControllers.js";
+import { removeFriendsValidate, searchUsersValidate } from "../middlewares/friendsMiddlewares.js";
+import { getFriendsController, removeFriendController, searchUsersController } from "../controllers/friendsControllers.js";
 
 
 const friendsRouter = Router();
 
-
-friendsRouter.get("/get-mutual-friends", isLoggedIn, getFriendRecommendationController);
+friendsRouter.get("/search-users", isLoggedIn, searchUsersValidate, searchUsersController);
 
 friendsRouter.get("/get-friends", isLoggedIn, getFriendsController);
 

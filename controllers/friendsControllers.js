@@ -3,9 +3,11 @@ import { userModel } from "../models/userModel.js";
 
 
 
-export const getFriendRecommendationController = async (req, res) => {
+export const searchUsersController = async (req, res) => {
     try {
         const { _id } = req.user;
+
+        const { search } = req.query;
 
         const myDetails = await userModel.findById(_id).select("-_id friends hobbies");
         if (!myDetails)
@@ -14,14 +16,13 @@ export const getFriendRecommendationController = async (req, res) => {
                 message: "User not found!"
             });
 
-        let requestedUsers=await requestsModel.find({sender:_id}).select("-_id receiver");
-        requestedUsers= requestedUsers.map(requestedUser=>requestedUser.receiver);
+        let requestedUsers = await requestsModel.find({ sender: _id }).select("-_id receiver");
+        requestedUsers = requestedUsers.map(requestedUser => requestedUser.receiver);
 
         const nonFriendUsers = await userModel.find({
-            _id: { $ne: _id, $nin: [...myDetails.friends,...requestedUsers] }
+            _id: { $ne: _id, $nin: [...myDetails.friends, ...requestedUsers] },
+            ...(search ? { name: { $regex: search, $options: 'i' } } : {})
         }).select("_id name friends hobbies");
-
-        
 
         const myFriendsSet = new Set(myDetails.friends);
         const myHobbiesSet = new Set(myDetails.hobbies);
@@ -51,11 +52,10 @@ export const getFriendRecommendationController = async (req, res) => {
         console.error(error);
         res.status(500).send({
             success: false,
-            message: "Error while fetching recommendations!"
+            message: "Error while searching friends!"
         });
     }
 };
-
 
 
 export const getFriendsController = async (req, res) => {
