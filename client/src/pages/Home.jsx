@@ -10,65 +10,14 @@ import SearchBar from "../components/SearchBar";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-  const testFriends = [
-    // { _id: "1", name: "Alice" },
-    // { _id: "2", name: "Bob" },
-    // { _id: "3", name: "Charlie" },
-    // { _id: "4", name: "David" },
-    // { _id: "5", name: "Eva" },
-    // { _id: "1", name: "Alice" },
-    // { _id: "2", name: "Bob" },
-    // { _id: "3", name: "Charlie" },
-    // { _id: "4", name: "David" },
-    // { _id: "5", name: "Eva" },
-    // { _id: "1", name: "Alice" },
-    // { _id: "2", name: "Bob" },
-    // { _id: "3", name: "Charlie" },
-    // { _id: "4", name: "David" },
-    // { _id: "5", name: "Eva" },
-  ];
-
-  const testRequests = [
-    // { _id: "1", sender: { name: "Frank" } },
-    // { _id: "2", sender: { name: "Grace" } },
-    // { _id: "3", sender: { name: "Hannah" } },
-    // { _id: "4", sender: { name: "Ivy" } },
-    // { _id: "5", sender: { name: "Jack" } },
-  ];
-
-  const testHobbies = [
-    // "Reading",
-    // "Traveling",
-    // "Cooking",
-    // "Gardening",
-    // "Cycling",
-  ];
-
-  const testPosts = [
-    // { _id: "1", sender: { name: "Alice" }, text: "Had a great day!" },
-    // { _id: "2", sender: { name: "Bob" }, text: "Loving the new book." },
-    // { _id: "3", sender: { name: "Charlie" }, text: "Visited a new city." },
-    // { _id: "4", sender: { name: "David" }, text: "Cooked a delicious meal." },
-    // { _id: "5", sender: { name: "Eva" }, text: "Enjoying the weekend." },
-  ];
-
-  const testSuggestions = [
-    // { _id: "1", name: "Kate", mutualFriends: 3, sharedHobbies: 2 },
-    // { _id: "2", name: "Leo", mutualFriends: 1, sharedHobbies: 4 },
-    // { _id: "3", name: "Mia", mutualFriends: 2, sharedHobbies: 1 },
-    // { _id: "4", name: "Nina", mutualFriends: 5, sharedHobbies: 3 },
-    // { _id: "5", name: "Owen", mutualFriends: 0, sharedHobbies: 5 },
-  ];
-
-  // State initialization with test data
 
   const [auth, setAuth] = useAuth();
   const [loading, setLoading] = useState();
-  const [friends, setFriends] = useState(testFriends);
-  const [requests, setRequests] = useState(testRequests);
-  const [hobbies, setHobbies] = useState(testHobbies);
-  const [posts, setPosts] = useState(testPosts);
-  const [suggestions, setSuggestions] = useState(testSuggestions);
+  const [friends, setFriends] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [hobbies, setHobbies] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
   const [selectedValue, setSelectedValue] = useState("FRIENDS");
   const [newHobby, setNewHobby] = useState("");
   const navigate = useNavigate();
@@ -87,18 +36,18 @@ const Home = () => {
     }
   }, []);
 
-  const addHobby = useCallback(async (hobby) => {
+  const addHobby = useCallback(async () => {
     try {
       const { data } = await axios.patch(
         "https://friendsapp-jfkv.onrender.com/api/hobby/add-hobby",
-        { hobby }
+        { hobby:newHobby}
       );
-      if (data?.success) setHobbies((prev) => [...prev, hobby]);
+      if (data?.success) setHobbies((prev) => [...prev, newHobby]);
     } catch (error) {
       console.error(error);
       alert("An error occurred");
     }
-  }, []);
+  }, [newHobby]);
 
   const removeHobby = useCallback(async (hobby) => {
     try {
@@ -260,7 +209,7 @@ const Home = () => {
             />
             <button
               className="add-hobby mt-2 w-[40%] py-2 px-4 bg-green-500 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400"
-              onClick={()=>addHobby(newHobby)}
+              onClick={addHobby}
             >
               Add Hobby
             </button>
