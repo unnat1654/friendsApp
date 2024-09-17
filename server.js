@@ -9,15 +9,22 @@ import { hobbiesRouter } from "./routes/hobbiesRouter.js";
 import { requestsRouter } from "./routes/requestsRouter.js";
 import { friendsRouter } from "./routes/friendsRouter.js";
 import { postsRouter } from "./routes/postsRouter.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 
 dotenv.config();
+
+//esmodule fix
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({extended: true }));
+app.use(express.static(path.join(__dirname, "./dist")));
 app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
