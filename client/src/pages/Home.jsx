@@ -176,7 +176,13 @@ const Home = () => {
 
   return (
     <div>
-      <img className={`flex mx-auto my-[50vh] translate-y-[-50%] ${!loading && "hidden"}`} src={Loading} alt="loading" />
+      <img
+        className={`flex mx-auto my-[50vh] translate-y-[-50%] ${
+          !loading && "hidden"
+        }`}
+        src={Loading}
+        alt="loading"
+      />
       <main
         className={`${
           loading && "hidden"

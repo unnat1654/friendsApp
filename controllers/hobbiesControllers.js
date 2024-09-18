@@ -2,7 +2,6 @@ import { userModel } from "../models/userModel.js";
 
 
 
-
 export const addHobbyController = async (req, res) => {
     try {
         const { _id } = req.user;

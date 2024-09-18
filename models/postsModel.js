@@ -4,19 +4,19 @@ import { Schema, model } from "mongoose";
 const postsSchema = new Schema({
     sender: {
         type: Schema.Types.ObjectId,
-        ref:"users",
+        ref: "users",
         required: true,
         immutable: true
     },
-    text:{
-        type:String,
+    text: {
+        type: String,
         maxlength: 10000,
-        required:true
+        required: true
     },
-    createdAt:{
-        type:Date,
+    createdAt: {
+        type: Date,
         default: Date.now,
-        required:true
+        required: true
     }
 
 });

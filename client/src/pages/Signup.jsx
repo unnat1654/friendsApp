@@ -37,11 +37,11 @@ const Signup = () => {
     }
   };
 
-  useEffect(()=>{
-    if(auth?.token){
+  useEffect(() => {
+    if (auth?.token) {
       navigate("/");
     }
-  },[auth?.token]);
+  }, [auth?.token]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -111,7 +111,12 @@ const Signup = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <span onClick={()=>navigate("/login")} className="signup-redirect block text-sm text-blue-500 mt-4 cursor-pointer hover:underline">Log in instead</span>
+        <span
+          onClick={() => navigate("/login")}
+          className="signup-redirect block text-sm text-blue-500 mt-4 cursor-pointer hover:underline"
+        >
+          Log in instead
+        </span>
         <button
           type="submit"
           className="signup-button mt-6 w-full py-2 px-4 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"

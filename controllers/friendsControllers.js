@@ -92,7 +92,7 @@ export const removeFriendController = async (req, res) => {
             { $pull: { friends: user_id } }
         );
         await userModel.updateOne(
-            { _id:user_id },
+            { _id: user_id },
             { $pull: { friends: _id } }
         );
 

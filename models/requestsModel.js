@@ -4,13 +4,13 @@ import { Schema, model } from "mongoose";
 const requestsSchema = new Schema({
     sender: {
         type: Schema.Types.ObjectId,
-        ref:"users",
+        ref: "users",
         required: true,
         immutable: true
     },
     receiver: {
         type: Schema.Types.ObjectId,
-        ref:"users",
+        ref: "users",
         required: true,
         immutable: true
     },

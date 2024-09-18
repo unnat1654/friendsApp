@@ -1,6 +1,8 @@
 import { postsModel } from "../models/postsModel.js";
 import { userModel } from "../models/userModel.js";
 
+
+
 export const createPostController = async (req, res) => {
     try {
         const { _id } = req.user;
@@ -32,16 +34,16 @@ export const getPostsController = async (req, res) => {
     try {
         const { _id } = req.user;
 
-        const {friends} = await userModel.findById(_id).select("-_id friends");
+        const { friends } = await userModel.findById(_id).select("-_id friends");
 
         const posts = await postsModel
-            .find({sender:{$in:friends}})
-            .populate("sender","_id name")
+            .find({ sender: { $in: friends } })
+            .populate("sender", "_id name")
             .sort({ createdAt: -1 })
 
         res.status(200).send({
-            success:true,
-            message:"Posts fetched successfully!",
+            success: true,
+            message: "Posts fetched successfully!",
             posts
         });
     } catch (error) {

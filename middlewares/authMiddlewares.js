@@ -36,7 +36,7 @@ export const signupValidate = async (req, res, next) => {
             return res.status(400).send({ success: false, message: "Email missing!" });
         if (!password || password.length < 6)
             return res.status(400).send({ success: false, message: "Password missing!" });
-        if (!name || name.length>25)
+        if (!name || name.length > 25)
             return res.status(400).send({ success: false, message: "Name missing!" });
 
         const userExists = await userModel.exists({ email });

@@ -8,7 +8,7 @@ const postsRouter = Router();
 
 postsRouter.post("/create-post", isLoggedIn, createPostValidate, createPostController);
 
-postsRouter.get("/get-posts",isLoggedIn, getPostsController);
+postsRouter.get("/get-posts", isLoggedIn, getPostsController);
 
 
 export { postsRouter };
